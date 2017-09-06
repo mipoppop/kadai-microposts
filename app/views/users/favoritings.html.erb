@@ -19,6 +19,6 @@
         <li class="<%= 'active' if current_page?(favoritings_user_path(@user)) %>"><%= link_to favoritings_user_path(@user) do %>Favorites <span class="badge"><%= @count_favoritings %></span><% end %></li>
       <% end %>
     </ul>
-    <%= render 'users', users: @followings %>
+    <%= render 'microposts/microposts', microposts: @user.favoritings %>
   </div>
 </div>

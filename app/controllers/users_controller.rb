@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
-  before_action :require_user_logged_in, only: [:index, :show, :followings, :followers]
+  before_action :require_user_logged_in, only: [:index, :show, :followings, :followers, :favoritings]
+  before_action :useronly, only: [:favoritings]
   
   def index
     @users = User.all.page(params[:page])
@@ -38,11 +39,22 @@ class UsersController < ApplicationController
     counts(@user)
   end
 
+  def favoritings
+    @user = User.find(params[:id])
+    @favoritings = @user.favoritings.page(params[:page])
+    counts(@user)
+  end
 
   private
 
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
+  end
+  
+  def useronly
+    if User.find(params[:id]) != current_user then
+      redirect_to user_path
+    end
   end
   
 end
